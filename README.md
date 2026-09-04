@@ -1,149 +1,286 @@
 # FirewallLogic
 
-### Automated Firewall Policy Auditing with Symbolic Reasoning & Sweep-Line Optimization
+### Automated Firewall Policy Auditing & Neurosymbolic Query Engine
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/SWI--Prolog-8.0%2B-FF3E00?logo=prolog&logoColor=white" alt="SWI-Prolog">
-  <img src="https://img.shields.io/badge/Logic--Based%20AI-Symbolic-6A5ACD" alt="Logic-Based AI">
+  <img src="https://img.shields.io/badge/Neurosymbolic%20AI-Logic--LM-6A5ACD" alt="Neurosymbolic AI">
   <img src="https://img.shields.io/badge/Optimization-Sweep--Line-orange" alt="Sweep-Line Optimization">
-  <img src="https://img.shields.io/badge/Explainability-Interpretable-success" alt="Explainable AI">
+  <img src="https://img.shields.io/badge/Explainability-Provable%20Logic-success" alt="Explainable AI">
   <img src="https://img.shields.io/badge/Flask-3.x-000000?logo=flask&logoColor=white" alt="Flask">
+</p>
+
+<p align="center">
+  <b>Hybrid Python–Prolog system for explainable firewall policy auditing, anomaly detection, and natural-language security reasoning.</b>
 </p>
 
 ---
 
 ## Table of Contents
 
-- [Abstract](#abstract)
-- [Research Motivation](#research-motivation)
-- [System Architecture](#system-architecture)
-- [Sweep-Line Optimization](#sweep-line-optimization)
-- [Symbolic Anomaly Detection](#symbolic-anomaly-detection)
-- [Supported Analysis Features](#supported-analysis-features)
-- [Repository Structure](#repository-structure)
-- [Screenshots & Experimental Outputs](#screenshots--experimental-outputs)
-- [Research Interests & Academic Alignment](#research-interests--academic-alignment)
-- [Limitations](#limitations)
-- [Future Research Directions](#future-research-directions)
+* [Abstract](#abstract)
+* [Research Motivation & Neurosymbolic Architecture](#research-motivation--neurosymbolic-architecture)
+* [System Architecture](#system-architecture)
+* [Natural Language Querying (Logic-LM Pattern)](#natural-language-querying-logic-lm-pattern)
+* [Sweep-Line Optimization](#sweep-line-optimization)
+* [Symbolic Anomaly Detection](#symbolic-anomaly-detection)
+* [Supported Analysis Features](#supported-analysis-features)
+* [Repository Structure](#repository-structure)
+* [Installation & Setup](#installation--setup)
+* [Screenshots & Experimental Outputs](#screenshots--experimental-outputs)
+* [Limitations](#limitations)
+
 
 ---
 
 ## Abstract
 
-**FirewallLogic** is a hybrid Python–Prolog system for automatically auditing firewall policies and detecting four classes of rule anomalies:
+**FirewallLogic** is a hybrid **Neurosymbolic Python–Prolog system** designed for automated firewall policy auditing, anomaly detection, and natural-language policy querying.
 
-- **Shadowing**
-- **Redundancy**
-- **Correlation**
-- **Generalization**
+The system operates on two core pillars:
 
-The core research idea is to combine **symbolic reasoning** with an algorithmic candidate-generation layer. Instead of sending every possible rule pair to the logic engine, FirewallLogic first applies a **destination-IP sweep-line algorithm** to identify potentially overlapping rule pairs. The surviving candidates are then evaluated using symbolic predicates in Prolog.
+### 1. Symbolic Anomaly Audit Engine
 
-This separation keeps the logical semantics explicit while reducing unnecessary pairwise reasoning.
+Detects four structural policy anomalies:
+
+* **Shadowing**
+* **Redundancy**
+* **Correlation**
+* **Generalization**
+
+The audit pipeline combines a 1D destination-IP **Sweep-Line optimization algorithm** for candidate filtering with a **SWI-Prolog deduction engine** for formal semantic verification.
+
+### 2. Neurosymbolic Natural Language Query Interface
+
+FirewallLogic follows a **Logic-LM-inspired pattern** in which free-form Persian or English queries are translated into structured logical predicates using an LLM.
+
+The resulting predicates are then executed deterministically by Prolog, enabling **provable first-match reasoning** instead of allowing the LLM to directly generate security decisions.
+
+This architecture helps reduce hallucination risks by separating:
+
+> **Natural-language interpretation** from **formal security reasoning**.
 
 ---
 
-## Research Motivation
+## Research Motivation & Neurosymbolic Architecture
 
-Firewall policies are naturally represented as logical rules, making them a useful setting for studying **logic-based reasoning**. However, naïve pairwise comparison becomes expensive as the policy grows.
+Network security policies require **provable correctness**.
 
-This project investigates a simple research question:
+Standard Large Language Models (LLMs) can interpret natural language effectively, but they are not inherently reliable for deterministic reasoning over complex firewall policies and may produce hallucinated or unprovable answers.
 
-> **Can algorithmic candidate filtering reduce the computational cost of symbolic firewall reasoning without changing the semantic detection rules?**
+Formal logic engines such as **Prolog**, on the other hand, provide precise symbolic reasoning but cannot naturally interpret ambiguous human-language intents.
 
-The optimization is therefore deliberately placed **before** the reasoning layer rather than replacing the reasoning itself.
+FirewallLogic addresses this trade-off through a **Modular Neurosymbolic Architecture** inspired by the Logic-LM pattern.
+
+```text
+┌──────────────────────────┐
+│ Natural Language Input   │
+│   Persian / English      │
+└────────────┬─────────────┘
+             │
+             ▼
+┌──────────────────────────┐
+│     LLM / Gemini         │
+│      Neural Layer        │
+└────────────┬─────────────┘
+             │
+             │ Typed JSON Predicate
+             ▼
+┌──────────────────────────┐
+│    Query Bridge          │
+│  Schema Validation       │
+└────────────┬─────────────┘
+             │
+             ▼
+┌──────────────────────────┐
+│     SWI-Prolog           │
+│     Symbolic Layer       │
+└────────────┬─────────────┘
+             │
+             ▼
+┌──────────────────────────┐
+│    Provable Answer       │
+└──────────────────────────┘
+```
+
+### Neural Layer
+
+The **Gemini API** performs semantic parsing and maps unconstrained Persian/English queries into a strictly typed, closed schema of logical functions, such as:
+
+* `is_allowed`
+* `reachable_from`
+* `who_can_reach`
+* `rules_matching_ip`
+
+### Symbolic Layer
+
+The **SWI-Prolog engine** performs:
+
+* Exact first-match evaluation
+* Subnet interval arithmetic
+* Rule priority analysis
+* Formal policy reasoning
+
+The LLM does **not** directly generate firewall decisions. It only translates the user's intent into a structured query that is subsequently evaluated by the symbolic reasoning engine.
 
 ---
 
 ## System Architecture
 
-The architecture is intentionally kept as a **responsive Mermaid diagram** so GitHub renders it interactively across desktop and mobile screens.
+FirewallLogic contains two complementary pipelines:
+
+1. **Static anomaly auditing**
+2. **Neurosymbolic natural-language querying**
 
 ```mermaid
 flowchart TD
-    A[iptables-save / nftables configuration] --> B[Python Parser]
-    B --> C[Validated Rule Objects]
-    C --> D[Normalized Rule Facts]
-    D --> E[Destination-IP Sweep-Line]
-    E --> F[Candidate Rule Pairs]
-    F --> G[SWI-Prolog Reasoning Engine]
-    G --> H[Shadowing]
-    G --> I[Redundancy]
-    G --> J[Correlation]
-    G --> K[Generalization]
-    H --> L[Findings]
-    I --> L
-    J --> L
-    K --> L
-    L --> M[CLI / JSON / HTML Report]
+
+    subgraph INPUT["Input Layer"]
+        A["iptables-save / nftables config"] --> B["Python Parser"]
+        B --> C["Validated Rule Objects"]
+    end
+
+    subgraph AUDIT["Audit Pipeline — Symbolic"]
+        C --> D["Normalized Facts"]
+        D --> E["Destination-IP Sweep-Line Filter"]
+        E --> F["Candidate Rule Pairs"]
+        F --> G["SWI-Prolog Audit Engine"]
+        G --> H["Shadowing / Redundancy / Correlation / Generalization"]
+    end
+
+    subgraph QUERY["NL Query Pipeline — Neurosymbolic"]
+        I["User Query — Persian / English"] --> J["NL Translator — Gemini API"]
+        J -->|"Constrained JSON Schema"| K["Query Bridge"]
+        C --> K
+        K --> L["SWI-Prolog Query Engine"]
+        L --> M["First-Match & Reachability Analysis"]
+    end
+
+    H --> N["Web UI / CLI / Reports"]
+    M --> N
 ```
 
-### Design Principle
+---
 
-The sweep-line stage is a **sound pre-filter**, not an anomaly detector. It removes pairs whose destination ranges cannot overlap; every surviving pair still goes through the original semantic checks.
+## Natural Language Querying (Logic-LM Pattern)
+
+FirewallLogic exposes a `/query` endpoint capable of answering non-trivial firewall policy questions.
+
+### Example Queries
+
+**English:**
+
+> Can `10.10.25.5` access `192.168.50.10` on port `22`?
+
+**Persian:**
+
+> آیا سیستم `10.10.25.5` به سرور `192.168.50.10` دسترسی دارد؟
+
+**Rule inspection:**
+
+> Which rules match destination IP `192.168.50.10`?
+
+---
+
+### Security Design: Server-Side Schema Enforcement
+
+Instead of asking the LLM to emit raw executable Prolog code—which could introduce injection and syntax risks—the translator (`nl_translator.py`) forces the LLM to output a **Pydantic-validated JSON structure** using Gemini's server-side `response_schema`.
+
+This creates a controlled boundary between the neural and symbolic components.
+
+### Supported Query Functions
+
+| Function                                            | Description                                                                     |
+| --------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `is_allowed(chain, src_ip, dst_ip, protocol, port)` | Computes the exact first-match decision: `allow`, `deny`, or `default_deny`.    |
+| `reachable_from(chain, src_ip)`                     | Lists candidate destination subnets accessible from a source.                   |
+| `who_can_reach(chain, dst_ip)`                      | Identifies source subnets permitted to reach a destination.                     |
+| `rules_matching_ip(chain, ip, direction)`           | Retrieves matching rules sorted by priority to explain why a decision was made. |
 
 ---
 
 ## Sweep-Line Optimization
 
-### Naïve approach
+### Naïve Pairwise Comparison
 
-For `N` rules, comparing every pair requires:
+A naïve implementation that compares every pair of `N` firewall rules requires:
 
-```text
-N(N-1)/2 = O(N²)
-```
+$$
+\mathcal{O}(N^2)
+$$
 
-### Implemented approach
+This quickly becomes expensive as the number of firewall rules increases.
 
-Destination ranges are converted to intervals, sorted by their start position, and processed using a sweep-line procedure to generate only potentially overlapping pairs.
+### Sweep-Line Candidate Generation
 
-The resulting complexity is more accurately described as:
+FirewallLogic converts destination IP ranges into **1D integer intervals**.
+
+The intervals are:
+
+1. Converted from CIDR ranges into numerical intervals.
+2. Sorted by their start positions.
+3. Processed using a sweep-line algorithm.
+4. Filtered to eliminate non-overlapping rule pairs.
+5. Passed to Prolog only when semantic analysis is potentially necessary.
+
+The resulting complexity is approximately:
 
 ```text
 Sorting:          O(N log N)
 Candidate pairs:  O(M)
+
 Overall:          O(N log N + M)
 ```
 
-where `M` is the number of destination-overlapping candidate pairs. In dense configurations, `M` can approach `O(N²)`, so the **worst-case remains quadratic**.
+Where `M` represents the number of overlapping candidate pairs.
 
-The optimization therefore targets realistic configurations where many rule pairs can be rejected before entering the more expensive symbolic reasoning stage.
+In typical rule bases:
+
+$$
+M \ll N^2
+$$
+
+Therefore, the sweep-line stage can significantly reduce the number of rule pairs that require symbolic reasoning.
 
 ---
 
-FirewallLogic evaluates relationships between rules using explicit logical conditions.
+## Symbolic Anomaly Detection
+
+FirewallLogic evaluates structural firewall-rule anomalies using Prolog predicates.
 
 ### Shadowing
-A broader earlier rule makes a later rule unreachable.
+
+A higher-priority rule completely covers a lower-priority rule, rendering the lower-priority rule unreachable.
 
 ### Redundancy
-A rule is effectively covered by an earlier rule with equivalent behavior.
+
+A rule provides no additional access because an earlier rule already performs an equivalent action.
 
 ### Correlation
-Two rules interact through overlapping conditions and actions in a potentially conflicting or significant way.
+
+Two rules overlap in traffic space but specify conflicting actions, producing order-dependent behavior.
 
 ### Generalization
-A later rule covers a broader space than an earlier related rule, exposing a policy-structure issue.
 
-Because these relationships are explicitly represented, a finding can be traced back to the rules and predicates that caused it.
+A lower-priority rule covers a broader traffic space than a preceding, more specific rule.
 
 ---
 
 ## Supported Analysis Features
 
-- `iptables-save` style firewall rules
-- `nftables`-oriented rule parsing
-- IPv4 / IPv6 handling
-- Chain isolation
-- Rule validation and unsupported-line handling
-- Full-policy audit
-- Incremental/new-rule analysis
-- JSON and text output
-- Web interface
-- Audit logging
-- Regression test configurations
+* `iptables-save` syntax support
+* `nftables` syntax support
+* IPv4 address and CIDR subnet range arithmetic
+* Natural Language Interface through `/query`
+* Persian and English natural-language queries
+* Automatic Gemini API key failover
+* First-match firewall policy simulation
+* Incremental audit mode — **Check New Rules**
+* Full policy anomaly reporting
+* Severity-based result cards
+* Persian **RTL** Web UI
+* English **LTR** Web UI
 
 ---
 
@@ -151,117 +288,156 @@ Because these relationships are explicitly represented, a finding can be traced 
 
 ```text
 FirewallLogic/
-├── ip_subnet.pl              # IP/subnet logic
-├── firewall_engine.pl        # Prolog symbolic reasoning engine
-├── parser.py                 # Firewall parsing & normalization
-├── bridge.py                 # Python ↔ Prolog bridge
-├── incremental.py            # Incremental analysis
-├── main.py                   # CLI entry point
-├── webapp.py                 # Web interface
-├── audit_log.py              # Audit logging
-
-├── test_configs/             # test cases
-├── static/
-├── templates/
-├── images/                   # Screenshots & benchmark outputs
-└── requirements.txt
+│
+├── ip_subnet.pl                 # Prolog: IP/CIDR interval arithmetic
+├── firewall_engine.pl           # Prolog: Core symbolic anomaly audit rules
+├── query_engine.pl              # Prolog: Natural-language query reasoning engine
+│
+├── parser.py                    # Python: Firewall configuration parser
+├── bridge.py                    # Python: PySwip interface for anomaly auditing
+├── incremental.py               # Python: Incremental rule-set analyzer
+├── webapp.py                    # Python: Flask web server & UI routing
+├── audit_log.py                 # Python: Execution logging & telemetry
+│
+├── nl_query/
+│   ├── query_bridge.py          # Python: Prolog bridge for NL query engine
+│   └── nl_translator.py         # Python: Gemini API + Pydantic schema
+│
+├── test_configs/                # Real-world and test firewall configurations
+├── templates/                   # HTML templates
+├── static/                      # CSS & Web assets
+├── images/                      # Documentation screenshots
+│
+├── .env.example                 # Example environment configuration
+└── requirements.txt             # Python dependencies
 ```
 
 ---
 
+## Installation & Setup
+
 ### Requirements
 
-- Python 3.8+
-- SWI-Prolog 8.0+
+* **Python:** 3.8+
+* **SWI-Prolog:** 8.0+
+
+Install SWI-Prolog using your operating system's package manager.
+
+For example:
+
+```bash
+# Ubuntu / Debian
+sudo apt install swi-prolog
+
+# macOS
+brew install swi-prolog
+```
+
+### Quick Start
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/firewalllogic.git
+cd firewalllogic
+```
+
+#### 2. Create a Virtual Environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+On Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+#### 3. Install Python Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+#### 4. Configure Gemini API Key
+
+The Gemini API is optional and is primarily required for the `/query` natural-language interface.
+
+```bash
+cp .env.example .env
+```
+
+Then configure:
+
+```env
+GEMINI_API_KEY=your_api_key
+```
+
+#### 5. Launch the Web Application
+
+```bash
+python webapp.py
+```
+
+The application will be available at:
+
+```text
+http://localhost:5000
+```
 
 ---
 
 ## Screenshots & Experimental Outputs
 
-The following captures show the real web UI and report output of FirewallLogic.
-All source files are kept in the [`images/`](images) folder of this repository.
+Documentation screenshots and experimental outputs are stored in the [`images/`](./images/) directory.
 
-### 1. Main Page (English)
+### 1. Main Page
 
-![Main Page – English](images/mainPage_EN.png)
+The primary FirewallLogic auditing interface.
 
-### 2. Incremental "Check New Rules" Page (English)
+### 2. Natural Language Query Interface
 
-![Incremental Check Rule Page – English](images/incremental%20Check%20Rule%20Page_EN.png)
+The `/query` interface allows users to submit Persian or English questions and translate them into structured logical queries.
 
-### 3. Main Page (Persian)
+### 3. Incremental "Check New Rules" Page
 
-![Main Page – Persian](images/mainPage_FA.png)
+The incremental auditing interface analyzes newly introduced firewall rules against an existing rule set.
 
-### 4. Result Report – Test 2 (English)
+### 4. Result Report
 
-![Test 2 Result Report – English](images/Test2ResultReport_EN.gif)
-
-### 5. Result Report – Test 1 (Persian)
-
-![Test 1 Result Report – Persian](images/Test1resultReport_FA.gif)
+The audit interface presents detected anomalies using structured reports and severity indicators.
 
 ---
 
-## Research Interests & Academic Alignment
-
-This project reflects my broader interest in:
-
-
-- **Formal Methods & Rule-Based Reasoning**
-- **Algorithmic Optimization and Scalable Inference**
-
-FirewallLogic is particularly relevant to these interests because it combines **explicit symbolic knowledge, interpretable reasoning, and algorithmic optimization** in one end-to-end system.
-
-A natural future direction is to combine symbolic policy reasoning with learned models—for example, using machine learning to prioritize risky findings while retaining symbolic reasoning as the interpretable verification layer.
-
----
 
 ## Limitations
 
-The current implementation has several known limitations:
+### 1. Sweep-Line Dimensionality
 
-- The sweep-line optimization can still degrade to `O(N²)` for highly overlapping policies.
-- Destination-IP filtering is only one dimension of the firewall rule space.
-- Mixed IPv4/IPv6 configurations may generate some candidates that are later rejected by exact family checks.
-- The current reasoning engine is rule-based and does not yet learn from historical firewall configurations.
+Candidate filtering currently indexes destination IP ranges.
 
-These limitations define concrete directions for further experimentation rather than hidden assumptions.
+Multi-dimensional indexing across:
 
----
+* IP
+* Port
+* Protocol
 
-## Future Research Directions
+is not currently implemented and remains an area for further development.
 
-1. **Multi-dimensional candidate filtering** across IP, protocol, ports, and interfaces.
-2. **Better spatial indexing** for highly overlapping policies.
-3. **Explainable reasoning traces** showing exactly why a rule was classified as an anomaly.
-4. **Vendor-neutral intermediate representation** for broader firewall support.
-5. **ML-assisted risk prioritization** while preserving symbolic verification.
-6. **Neuro-symbolic extensions** combining learned representations with explicit policy logic.
-7. **Large-scale empirical evaluation** across synthetic and real-world firewall datasets.
+### 2. Stateless Verification
 
----
+The current system focuses on static firewall rule sets.
 
-## Why This Repository Is Research-Relevant
+Dynamic connection-tracking mechanisms such as `conntrack` state tables are not evaluated.
 
-This project demonstrates more than implementation of a firewall tool. It shows an attempt to connect:
+### 3. Process-Local Logging
+
+Audit logging currently relies on local storage through:
 
 ```text
-Formal Rule Representation
-        ↓
-Logic-Based Reasoning
-        ↓
-Algorithmic Candidate Filtering
-        ↓
-Complexity Analysis
-        ↓
-Empirical Benchmarking
-        ↓
-Interpretable Results
+audit_log.csv
 ```
-
-The repository therefore serves as a practical undergraduate research artifact demonstrating experience with **symbolic AI, algorithm design, software architecture, experimentation, and explainable reasoning**.
-
-
 
 
