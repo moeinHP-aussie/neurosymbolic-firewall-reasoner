@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="{{ html_lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title_query }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell report-shell">
+    <div class="page-nav">
+      <nav class="section-nav" aria-label="{{ nav_full_check }} / {{ nav_incremental }}">
+        <a href="{{ url_for('index') }}?lang={{ lang }}">{{ nav_full_check }}</a>
+        <a href="{{ url_for('check_new_form') }}?lang={{ lang }}">{{ nav_incremental }}</a>
+      </nav>
+      <a class="back-link" href="{{ url_for('query_form') }}?lang={{ lang }}">{{ query_back }}</a>
+      <form class="lang-switch" method="get" action="{{ url_for('query_form') }}">
+        <label for="lang-select">{{ lang_switch_label }}</label>
+        <select id="lang-select" name="lang" onchange="this.form.submit()">
+          <option value="fa" {% if lang == 'fa' %}selected{% endif %}>{{ lang_name_fa }}</option>
+          <option value="en" {% if lang == 'en' %}selected{% endif %}>{{ lang_name_en }}</option>
+        </select>
+      </form>
+    </div>
+
+    <header class="report-header">
+      <p class="eyebrow">{{ query_result_eyebrow }}</p>
+      <h1>{{ query_result_h1 }}</h1>
+      <p class="source">{{ source_name }}</p>
+    </header>
+
+    {% if parse_errors %}
+      <section class="message warning"><p>{{ query_parse_warning }}</p></section>
+    {% endif %}
+
+    <section class="query-card" aria-labelledby="understood-title">
+      <h2 id="understood-title">{{ query_understood_title }}</h2>
+      <p class="question-text">{{ question }}</p>
+      <p class="query-function">{{ translation.function_label }}</p>
+      <dl class="query-arguments">
+        {% for argument in translation.arguments %}
+          <div><dt>{{ argument.label }}</dt><dd><code>{{ argument.value }}</code></dd></div>
+        {% endfor %}
+      </dl>
+    </section>
+
+    <section class="query-card" aria-labelledby="answer-title">
+      <h2 id="answer-title">{{ query_answer_title }}</h2>
+      <p class="form-note">{{ query_rules_count }}: {{ rules_count }}</p>
+      {% if result.kind == 'decision' %}
+        <p class="query-decision {{ result.decision }}">{{ result.decision_label }}</p>
+      {% elif result.kind == 'rule_check' %}
+        <p class="query-decision {{ 'deny' if result.found else 'allow' }}">{{ result.message }}</p>
+        {% if result.entries %}
+          <ul class="query-results">
+            {% for entry in result.entries %}<li><code>{{ entry }}</code></li>{% endfor %}
+          </ul>
+        {% endif %}
+      {% elif result.kind == 'summary' %}
+        <dl class="query-arguments">
+          {% for stat in result.stats %}
+            <div><dt>{{ stat.label }}</dt><dd><code>{{ stat.value }}</code></dd></div>
+          {% endfor %}
+        </dl>
+        {% if result.by_protocol %}
+          <p class="form-note">{{ result.by_protocol_label }}</p>
+          <ul class="query-results">
+            {% for row in result.by_protocol %}<li><code>{{ row.label }}: {{ row.value }}</code></li>{% endfor %}
+          </ul>
+        {% endif %}
+      {% elif result.entries %}
+        <ul class="query-results">
+          {% for entry in result.entries %}<li><code>{{ entry }}</code></li>{% endfor %}
+        </ul>
+      {% else %}
+        <p class="empty-query">{{ query_list_empty }}</p>
+      {% endif %}
+      {% if result.limitation %}<p class="message info">{{ result.limitation }}</p>{% endif %}
+    </section>
+  </main>
+</body>
+</html>

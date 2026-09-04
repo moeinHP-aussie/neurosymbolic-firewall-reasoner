@@ -16,7 +16,10 @@
       </select>
     </form>
 
-    <a class="back-link" href="{{ url_for('index') }}?lang={{ lang }}">{{ back_to_full_analysis }}</a>
+    <nav class="section-nav" aria-label="{{ nav_full_check }} / {{ nav_nl_query }}">
+      <a href="{{ url_for('index') }}?lang={{ lang }}">{{ nav_full_check }}</a>
+      <a href="{{ url_for('query_form') }}?lang={{ lang }}">{{ nav_nl_query }}</a>
+    </nav>
 
     <header class="masthead">
       <p class="eyebrow">{{ incremental_eyebrow }}</p>

@@ -16,6 +16,11 @@
       </select>
     </form>
 
+    <nav class="section-nav" aria-label="{{ nav_incremental }} / {{ nav_nl_query }}">
+      <a href="{{ url_for('check_new_form') }}?lang={{ lang }}">{{ nav_incremental }}</a>
+      <a href="{{ url_for('query_form') }}?lang={{ lang }}">{{ nav_nl_query }}</a>
+    </nav>
+
     <a class="back-link" href="{{ url_for('index') }}?lang={{ lang }}">{{ back_to_new_analysis }}</a>
 
     <header class="report-header">

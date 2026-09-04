@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="{{ html_lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title_query }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <div class="page-nav">
+      <nav class="section-nav" aria-label="{{ nav_full_check }} / {{ nav_incremental }}">
+        <a href="{{ url_for('index') }}?lang={{ lang }}">{{ nav_full_check }}</a>
+        <a href="{{ url_for('check_new_form') }}?lang={{ lang }}">{{ nav_incremental }}</a>
+      </nav>
+      <form class="lang-switch" method="get" action="{{ url_for('query_form') }}">
+        <label for="lang-select">{{ lang_switch_label }}</label>
+        <select id="lang-select" name="lang" onchange="this.form.submit()">
+          <option value="fa" {% if lang == 'fa' %}selected{% endif %}>{{ lang_name_fa }}</option>
+          <option value="en" {% if lang == 'en' %}selected{% endif %}>{{ lang_name_en }}</option>
+        </select>
+      </form>
+    </div>
+
+    <header class="masthead">
+      <p class="eyebrow">FirewallLogic</p>
+      <h1>{{ query_h1 }}</h1>
+      <p class="lead">{{ query_lead }}</p>
+    </header>
+
+    <section class="upload-panel" aria-labelledby="query-panel-title">
+      <h2 id="query-panel-title">{{ query_panel_title }}</h2>
+      {% if error %}<p class="message error" role="alert">{{ error }}</p>{% endif %}
+      <form method="post" action="{{ url_for('query_firewall_rules') }}?lang={{ lang }}" enctype="multipart/form-data" id="query-form">
+        <input type="hidden" name="lang" value="{{ lang }}">
+        <label class="text-input" for="question">
+          <span>{{ query_question_label }}</span>
+          <textarea id="question" name="question" rows="4" maxlength="2000" required placeholder="{{ query_question_placeholder }}">{{ question }}</textarea>
+        </label>
+        <label class="file-input" for="config">
+          <span>{{ query_file_label }}</span>
+          <input id="config" name="config" type="file" accept=".conf,.rules,.txt" required>
+        </label>
+        <button type="submit" id="query-submit">{{ query_submit }}</button>
+        <p class="form-note">{{ query_form_note }}</p>
+      </form>
+    </section>
+
+    <section class="scope" aria-labelledby="query-examples-title">
+      <h2 id="query-examples-title">{{ query_examples_title }}</h2>
+      <p>{{ query_examples_body }}</p>
+      <ul class="query-examples">
+        {% for example in query_examples %}
+          <li>
+            <button type="button" class="example-chip" data-example="{{ example }}">
+              {{ example }}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+  <script>
+    document.getElementById('query-form').addEventListener('submit', () => {
+      const button = document.getElementById('query-submit');
+      button.disabled = true;
+      button.textContent = {{ query_submitting|tojson }};
+    });
+    document.querySelectorAll('.example-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const textarea = document.getElementById('question');
+        textarea.value = chip.dataset.example;
+        textarea.focus();
+      });
+    });
+  </script>
+</body>
+</html>
