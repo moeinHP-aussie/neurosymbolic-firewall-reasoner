@@ -391,23 +391,45 @@ http://localhost:5000
 
 ## Screenshots & Experimental Outputs
 
-Documentation screenshots and experimental outputs are stored in the [`images/`](./images/) directory.
+The following screenshots and experimental outputs demonstrate the FirewallLogic web interface, incremental auditing workflow, and policy analysis results.
 
-### 1. Main Page
+### 1. Main Page — English
 
-The primary FirewallLogic auditing interface.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moeinHP-aussie/neurosymbolic-firewall-reasoner/main/images/mainPage_EN.png" alt="FirewallLogic Main Page - English">
+</p>
 
-### 2. Natural Language Query Interface
+---
 
-The `/query` interface allows users to submit Persian or English questions and translate them into structured logical queries.
+### 2. Main Page — Persian
 
-### 3. Incremental "Check New Rules" Page
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moeinHP-aussie/neurosymbolic-firewall-reasoner/main/images/mainPage_FA.png" alt="FirewallLogic Main Page - Persian">
+</p>
 
-The incremental auditing interface analyzes newly introduced firewall rules against an existing rule set.
+---
 
-### 4. Result Report
+### 3. Incremental Check Rule Page — English
 
-The audit interface presents detected anomalies using structured reports and severity indicators.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moeinHP-aussie/neurosymbolic-firewall-reasoner/main/images/incremental%20Check%20Rule%20Page_EN.png" alt="Incremental Check Rule Page">
+</p>
+
+---
+
+### 4. Result Report — English
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moeinHP-aussie/neurosymbolic-firewall-reasoner/main/images/Test2ResultReport_EN.gif" alt="FirewallLogic Result Report - English">
+</p>
+
+---
+
+### 5. Result Report — Persian
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moeinHP-aussie/neurosymbolic-firewall-reasoner/main/images/Test1resultReport_FA.gif" alt="FirewallLogic Result Report - Persian">
+</p>
 
 ---
 
