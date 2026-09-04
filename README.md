@@ -29,9 +29,8 @@
 * [Repository Structure](#repository-structure)
 * [Installation & Setup](#installation--setup)
 * [Screenshots & Experimental Outputs](#screenshots--experimental-outputs)
-* [Research Interests & Academic Alignment](#research-interests--academic-alignment)
 * [Limitations](#limitations)
-* [Future Research Directions](#future-research-directions)
+
 
 ---
 
@@ -412,23 +411,6 @@ The audit interface presents detected anomalies using structured reports and sev
 
 ---
 
-## Research Interests & Academic Alignment
-
-FirewallLogic aligns with several research areas:
-
-* **Neurosymbolic AI**
-* **Logic-LM-inspired architectures**
-* **Formal Methods**
-* **Security Verification**
-* **Knowledge Representation**
-* **Logic Programming**
-* **Algorithmic Optimization**
-* **Computational Geometry**
-* **Explainable AI**
-
-The project serves as a practical undergraduate research artifact demonstrating how **Generative AI can be safely bounded by formal symbolic reasoning** in security-sensitive domains where probabilistic models alone may be insufficient.
-
----
 
 ## Limitations
 
@@ -460,34 +442,6 @@ audit_log.csv
 
 ---
 
-## Future Research Directions
-
-### 1. Multi-Dimensional Spatial Indexing
-
-Extend the current sweep-line approach toward spatial data structures such as:
-
-* R-trees
-* k-d trees
-* Multi-dimensional interval structures
-
-This could enable candidate filtering across IP, port, and protocol dimensions.
-
-### 2. Neurosymbolic Feedback Loops
-
-Use Prolog reasoning feedback to improve local open-source Small Language Models (SLMs), such as:
-
-* Llama
-* Qwen
-
-The objective would be to create a tighter feedback loop between semantic parsing and formal symbolic verification.
-
-### 3. Automated Policy Remediation
-
-Extend FirewallLogic beyond detection toward automatic remediation by generating optimized, anomaly-free firewall patches.
-
-Potential output could include automatically generated `iptables` patch scripts that resolve detected policy anomalies while preserving intended access behavior.
-
----
 
 ## Project Philosophy
 
