@@ -429,6 +429,20 @@ def _build_prolog_script(rules: list[Rule], lang: str = "fa") -> str:
     engine_path = ENGINE_PL.resolve().as_posix().replace("'", "\\\\'")
     return f"""\
 :- encoding(utf8).
+% `:- encoding(utf8)` above only controls how THIS SCRIPT FILE is read.
+% It does not touch the encoding of current_output/user_error, which is
+% what format/2 below actually writes through. When stdout is piped to
+% a subprocess.run() capture (rather than a real terminal), SWI-Prolog
+% does not reliably default that stream to UTF-8 on every platform --
+% when it doesn't, format("~w", [Explanation]) falls back to writing
+% non-ASCII characters as literal \\uXXXX escape sequences instead of
+% raw UTF-8 bytes, which is exactly the "sayehandagi\\u0628\\u062d..."
+% -style corruption this fixes. Setting both streams explicitly, right
+% after the encoding/1 directive and before any Persian text is
+% written, makes the subprocess backend's output correct regardless of
+% the parent process's locale.
+:- set_stream(current_output, encoding(utf8)).
+:- set_stream(user_error, encoding(utf8)).
 :- use_module('{subnet_path}').
 :- consult('{engine_path}').
 :- dynamic user:rule/8.
@@ -469,6 +483,15 @@ def _run_via_subprocess(
             [swipl_path, "-q", script_path],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            # Without an explicit encoding, subprocess.run(text=True) falls
+            # back to locale.getpreferredencoding(), which is UTF-8 on most
+            # Linux setups but is frequently a legacy codepage (e.g.
+            # cp1252/cp936) on Windows. The Prolog side now always writes
+            # UTF-8 (see the set_stream/2 directives in
+            # _build_prolog_script above), so decoding as anything else
+            # here would silently turn correct UTF-8 bytes into mojibake
+            # regardless of that fix.
             timeout=timeout_seconds,
         )
     except FileNotFoundError:

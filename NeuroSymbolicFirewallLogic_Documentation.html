@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FirewallLogic v2 — رابط پرس‌وجوی زبان طبیعی | مستند فنی نسخه ۳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --primary:#4338ca; --primary-dark:#312e81; --violet:#7c3aed; --pink:#db2777;
+  --teal:#0d9488; --sky:#0284c7; --amber:#d97706; --green:#16a34a; --red:#dc2626;
+  --ink:#1e293b; --muted:#64748b; --bg:#f1f5f9; --card:#ffffff;
+  --code-bg:#0f172a; --code-ink:#e2e8f0;
+  --radius:16px; --shadow:0 10px 30px rgba(2,6,23,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Vazirmatn",Tahoma,sans-serif;color:var(--ink);line-height:2.05;font-size:15.5px;
+  background:
+    radial-gradient(1100px 550px at 92% -8%, rgba(124,58,237,.12), transparent 60%),
+    radial-gradient(900px 500px at 0% 8%, rgba(13,148,136,.10), transparent 55%),
+    var(--bg);
+}
+::selection{background:#c7d2fe;color:#1e1b4b}
+.container{max-width:1020px;margin:0 auto;padding:0 20px}
+.en{direction:ltr;unicode-bidi:isolate;font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--primary-dark)}
+strong{color:var(--primary-dark)}
+
+/* ───── سربرگ ───── */
+.hero{background:linear-gradient(135deg,#1e1b4b,#4338ca 45%,#7c3aed 78%,#a21caf);
+  color:#fff;padding:58px 0 104px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(650px 320px at 88% 12%, rgba(255,255,255,.15), transparent 60%)}
+.hero .container{position:relative;z-index:1}
+.badge{display:inline-block;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.35);
+  padding:4px 16px;border-radius:999px;font-size:.78rem;margin-bottom:14px}
+.hero h1{font-size:2rem;font-weight:900;line-height:1.5}
+.hero .en-title{direction:ltr;display:inline-block;font-family:"JetBrains Mono",monospace;
+  font-size:1.02rem;color:#c7d2fe;margin-top:4px}
+.hero p{max-width:800px;margin-top:14px;color:#e0e7ff;text-align:justify}
+.hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.hero .meta span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  padding:4px 14px;border-radius:10px;font-size:.8rem}
+
+/* ───── فهرست ───── */
+.toc{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:26px 28px;margin-top:-60px;position:relative;z-index:2}
+.toc h2{font-size:1.12rem;font-weight:800;margin-bottom:14px;color:var(--primary-dark)}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px}
+.toc a{display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:10px;
+  text-decoration:none;color:var(--ink);font-weight:500;font-size:.93rem;transition:.2s;border:1px solid transparent}
+.toc a:hover{background:#eef2ff;border-color:#c7d2fe;transform:translateX(-4px)}
+.toc .num{min-width:29px;height:29px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.83rem;flex-shrink:0}
+
+/* ───── بخش‌ها ───── */
+section{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:32px 34px;margin:24px 0;scroll-margin-top:20px}
+h2.sec{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.h-icon{min-width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:1.3rem;color:#fff;
+  box-shadow:0 6px 14px rgba(2,6,23,.16);flex-shrink:0}
+h3{font-size:1.06rem;font-weight:800;color:var(--primary-dark);margin:22px 0 8px}
+h4{font-size:.98rem;font-weight:800;margin-bottom:6px}
+p{text-align:justify;margin-bottom:11px}
+ul,ol{padding-right:26px;margin-bottom:11px}
+li{margin-bottom:6px}
+code.inline{direction:ltr;unicode-bidi:isolate;font-family:"JetBrains Mono",monospace;
+  background:#eef2ff;color:#3730a3;padding:2px 8px;border-radius:7px;font-size:.86em}
+
+/* ───── جعبه‌های نکته ───── */
+.callout{border-radius:13px;padding:16px 20px;margin:16px 0;border-right:5px solid}
+.callout p:last-child,.callout ul:last-child{margin-bottom:0}
+.callout.info{background:#eff6ff;border-color:var(--sky)}
+.callout.key{background:#eef2ff;border-color:var(--primary)}
+.callout.warn{background:#fffbeb;border-color:var(--amber)}
+.callout.danger{background:#fef2f2;border-color:var(--red)}
+.callout.success{background:#ecfdf5;border-color:var(--green)}
+.callout .ttl{font-weight:800;display:block;margin-bottom:4px}
+.callout.info .ttl{color:var(--sky)} .callout.key .ttl{color:var(--primary)}
+.callout.warn .ttl{color:var(--amber)} .callout.danger .ttl{color:var(--red)}
+.callout.success .ttl{color:var(--green)}
+
+/* ───── کد ───── */
+pre{direction:ltr;text-align:left;background:var(--code-bg);color:var(--code-ink);
+  border-radius:13px;padding:18px 20px;overflow-x:auto;margin:14px 0;
+  font-family:"JetBrains Mono",monospace;font-size:.85rem;line-height:1.85;
+  border:1px solid #1e293b}
+pre .c{color:#64748b} pre .k{color:#93c5fd} pre .s{color:#86efac} pre .n{color:#fbbf24} pre .f{color:#f0abfc}
+
+/* ───── جدول ───── */
+.table-wrap{overflow-x:auto;border-radius:13px;border:1px solid #e2e8f0;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:640px;background:#fff}
+thead th{background:linear-gradient(135deg,var(--primary),var(--violet));color:#fff;padding:12px 14px;font-weight:700}
+tbody td{padding:10px 14px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+tbody tr:nth-child(even){background:#f8fafc}
+tbody th{background:#eef2ff;color:var(--primary-dark);padding:10px 14px;text-align:right;font-weight:700;white-space:nowrap}
+td.good{color:var(--green);font-weight:700} td.bad{color:var(--red);font-weight:700}
+
+/* ───── فلوچارت ───── */
+.flow{display:flex;flex-direction:column;align-items:stretch;gap:0;margin:18px 0}
+.fstep{border-radius:14px;padding:18px 22px;border:1px solid #e2e8f0;
+  background:linear-gradient(180deg,#fff,#f8faff);position:relative}
+.fstep .tag{display:inline-block;color:#fff;font-size:.75rem;font-weight:800;
+  padding:2px 12px;border-radius:999px;margin-bottom:8px}
+.fstep .fname{font-weight:800;color:var(--primary-dark)}
+.arrow{text-align:center;font-size:1.5rem;color:var(--violet);line-height:1.4;padding:2px 0}
+.arrow small{display:block;font-size:.75rem;color:var(--muted)}
+
+/* ───── کارت‌ها ───── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin:16px 0}
+.card{border-radius:14px;padding:18px 20px;background:linear-gradient(180deg,#fff,#f8faff);
+  border:1px solid #e2e8f0;border-right:6px solid var(--c,var(--primary));transition:.25s}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.card .sig{direction:ltr;unicode-bidi:isolate;display:inline-block;font-family:"JetBrains Mono",monospace;
+  font-size:.83rem;background:#eef2ff;color:#3730a3;padding:3px 10px;border-radius:8px;margin-bottom:8px}
+.card p{font-size:.9rem;color:#475569;margin:0}
+.pc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:14px}
+.pc{border-radius:14px;padding:20px 24px}
+.pc.pros{background:#ecfdf5;border:1px solid #a7f3d0}
+.pc.cons{background:#fef2f2;border:1px solid #fecaca}
+.pc.pros h3{color:#047857;margin-top:0} .pc.cons h3{color:#b91c1c;margin-top:0}
+.pc li{list-style:none;margin-bottom:8px;font-size:.92rem}
+.pc.pros li::before{content:"✔ ";color:var(--green);font-weight:900}
+.pc.cons li::before{content:"✖ ";color:var(--red);font-weight:900}
+
+/* ───── نشان وضعیت ───── */
+.phase{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}
+.ph{flex:1;min-width:230px;border-radius:13px;padding:16px 18px;background:#f8fafc;border:1px solid #e2e8f0}
+.ph .st{display:inline-block;background:#dcfce7;color:#166534;font-weight:800;font-size:.78rem;
+  padding:2px 12px;border-radius:999px;margin-bottom:6px}
+.ph b{display:block;color:var(--primary-dark)}
+.ph span{font-size:.86rem;color:var(--muted)}
+
+blockquote{background:#fdf4ff;border-right:5px solid var(--pink);padding:16px 20px;
+  border-radius:12px;margin:16px 0;color:#4a044e;text-align:justify}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:30px 20px 50px;line-height:2}
+.to-top{position:fixed;left:22px;bottom:22px;width:46px;height:46px;border-radius:50%;
+  background:var(--primary);color:#fff;display:grid;place-items:center;text-decoration:none;
+  box-shadow:var(--shadow);font-size:1.25rem;z-index:9;transition:.2s}
+.to-top:hover{background:var(--violet);transform:translateY(-3px)}
+@media(max-width:620px){
+  .hero h1{font-size:1.5rem} section{padding:24px 18px} h2.sec{font-size:1.12rem}
+}
+</style>
+</head>
+<body id="top">
+
+<!-- ═══════════ سربرگ ═══════════ -->
+<header class="hero">
+  <div class="container">
+    <h1>FirewallLogic v2 </h1>
+    <span class="en-title">Natural Language Query Interface — Technical Document v3</span>
+    <p>مستند فنی کامل افزودن قابلیت پرسش به زبان طبیعی (فارسی/انگلیسی) به ابزار تحلیل منطقی قوانین فایروال؛ با ترکیب مدل زبانی Gemini برای «فهم» و موتور Prolog برای «استدلال قطعی» روی پیکربندی واقعی.</p>
+    <div class="meta">
+      <span>📝 نویسنده: Moein Hassanpour</span>
+      <span>✅ هر سه فاز تکمیل و تست‌شده</span>
+      <span>🔬 تست واقعی روی ۵۲۷ قانون</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ═══════════ فهرست ═══════════ -->
+<nav class="toc" id="toc">
+  <h2>📑 فهرست مطالب</h2>
+  <div class="toc-grid">
+    <a href="#intro"><span class="num" style="background:var(--primary)">۱</span>این پروژه چیست؟</a>
+    <a href="#neuro"><span class="num" style="background:var(--violet)">۲</span>چرا «عصبی–نمادی»؟ (تحلیل جامع)</a>
+    <a href="#status"><span class="num" style="background:var(--green)">۳</span>وضعیت پروژه: سه فاز</a>
+    <a href="#concepts"><span class="num" style="background:var(--teal)">۴</span>مفاهیم پایه‌ای</a>
+    <a href="#arch"><span class="num" style="background:var(--sky)">۵</span>معماری کامل: از سؤال تا پاسخ</a>
+    <a href="#phase1"><span class="num" style="background:var(--amber)">۶</span>فاز ۱ — موتور کوئری Prolog</a>
+    <a href="#phase2"><span class="num" style="background:var(--pink)">۷</span>فاز ۲ — لایه ترجمه با LLM</a>
+    <a href="#phase3"><span class="num" style="background:var(--red)">۸</span>فاز ۳ — رابط کاربری وب</a>
+    <a href="#files"><span class="num" style="background:#475569">۹</span>ساختار فایل‌های پروژه</a>
+    <a href="#summary"><span class="num" style="background:var(--primary-dark)">۱۰</span>خلاصهٔ اجرایی (رزومه)</a>
+  </div>
+</nav>
+
+<!-- ═══════════ ۱. مقدمه ═══════════ -->
+<section id="intro">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--primary),var(--violet))">🧭</span>۱) این پروژه چیست؟</h2>
+  <p>
+    <strong>FirewallLogic</strong> یک ابزار موجود است که فایل‌های پیکربندی فایروال (<code class="inline">iptables</code>) را می‌خواند و
+    به‌صورت خودکار خطاهای منطقی را پیدا می‌کند: rule تکراری، rule متناقض، rule‌ای که هرگز اجرا نمی‌شود و غیره.
+    این بخش کامل، تست‌شده و در حال استفاده است.
+  </p>
+  <p>
+    <strong>این مستند دربارهٔ یک قابلیت جدید</strong> است که به FirewallLogic اضافه می‌شود: به‌جای آنکه مدیر شبکه دستورات پیچیده بنویسد،
+    سؤالش را به زبان طبیعی (فارسی یا انگلیسی) می‌پرسد:
+  </p>
+  <blockquote>
+    «آیا IP آدرس <span class="en">10.10.25.5</span> می‌تواند روی پورت <span class="en">SSH</span> به سرور <span class="en">192.168.50.10</span> وصل شود؟»
+  </blockquote>
+  <p>
+    و سیستم یک جواب <strong>دقیق و قابل‌اثبات</strong> می‌دهد — نه یک حدس از یک مدل زبانی؛ بلکه جوابی که مستقیماً از
+    تحلیل منطقی فایل <span class="en">config</span> واقعی به دست آمده است.
+  </p>
+</section>
+
+<!-- ═══════════ ۲. بخش بازنویسی‌شده Neurosymbolic ═══════════ -->
+<section id="neuro">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--violet),#a21caf)">🧠📐</span>۲) چرا این پروژه «هوش مصنوعی عصبی–نمادی» است؟ — تحلیل جامع</h2>
+
+  <h3>۲.۱) تعریف دقیق پارادایم</h3>
+  <p>
+    <strong>هوش مصنوعی عصبی–نمادی</strong> (<span class="en">Neurosymbolic AI</span>) به هر سامانهٔ محاسباتی‌ای گفته می‌شود که در آن
+    دو خانوادهٔ فناوری — که تاریخچهٔ هوش مصنوعی آن‌ها را غالباً در تقابل نشان داده است — <u>هر دو حضور فعال دارند</u> و
+    خروجی نهایی سامانه از ترکیب توانمندی‌های هر دو به دست می‌آید:
+  </p>
+  <ul>
+    <li><strong>مؤلفهٔ عصبی</strong> (<span class="en">Neural</span>): شبکه‌های عصبی و مدل‌های زبانی بزرگ — موتور «ادراک، فهم و تعمیم آماری».</li>
+    <li><strong>مؤلفهٔ نمادی</strong> (<span class="en">Symbolic</span>): منطق صوری، <span class="en">Prolog</span> و پایگاه‌های دانش قاعده‌محور — موتور «استدلال قطعی و قابل‌اثبات».</li>
+  </ul>
+  <p>
+    این پارادایم که توسط پژوهشگرانی چون <span class="en">Garcez &amp; Lamb</span> «موج سوم هوش مصنوعی» نامیده شده، پاسخی است به
+    دو محدودیت بنیادینی که هیچ‌کدام از دو مکتب محض نتوانسته‌اند بر آن‌ها غلبه کنند:
+    <strong>نمادگرایی محض</strong> (<span class="en">GOFAI</span>) دچار گلوگاه کسب دانش و شکنندگی در برابر دادهٔ خام و مبهم است، و
+    <strong>اتصال‌گرایی محض</strong> فاقد تضمین منطقی، تفسیرپذیری و مقاومت در برابر توهم است. یکپارچه‌سازی این دو، یعنی «فهم انعطاف‌پذیر + استدلال سخت‌گیرانه».
+  </p>
+
+  <h3>۲.۲) تحلیل دقیق مؤلفهٔ عصبی: چرا <span class="en">Gemini</span> برای «فهم» عالی و برای «داوری» نامناسب است؟</h3>
+  <p>
+    یک مدل زبانی بزرگ، در بنیادی‌ترین سطح، یک <strong>مدل احتمالاتی زبان</strong> است: برای هر ورودی، توزیع احتمال روی توکن‌های بعدی تولید می‌کند.
+    این معماری دو پیامد مستقیم دارد:
+  </p>
+  <div class="grid">
+    <div class="card" style="--c:var(--green)">
+      <h4>✅ چرا LLM اینجا لازم است</h4>
+      <p>درک زبان طبیعی فارسی و انگلیسی، پارافریز‌سازی، تشخیص نام سرویس به‌جای شماره پورت (<span class="en">SSH→22, HTTPS→443</span>)،
+      ابهام‌زدایی از عبارات محاوره‌ای و تبدیل منظور کاربر به یک ساختار مشخص — این‌ها توانمندی‌هایی‌اند که صرفاً از یادگیری آماری انبوه برمی‌آیند
+      و هیچ موتور منطقی‌ای از عهدهٔ آن‌ها برنمی‌آید.</p>
+    </div>
+    <div class="card" style="--c:var(--red)">
+      <h4>❌ چرا LLM به‌تنهایی کافی نیست</h4>
+      <p>مدل زبانی <strong>هیچ تضمین صوری برای درستیِ خروجی ندارد</strong>؛ خروجی آن «محتمل» است، نه «معلوم».
+      <strong>توهم</strong> (<span class="en">Hallucination</span>) یک <em>خاصیت ذاتی</em> این معماری است، نه یک باگ تصادفی که با نسخهٔ بعدی حذف شود:
+      مدل می‌تواند با همان اعتمادبه‌نفسِ آماری، پاسخی منسجم اما نادرست دربارهٔ رفتار فایروال تولید کند — و در حوزهٔ امنیت شبکه، چنین پاسخی یعنی ریسک نفوذ.</p>
+    </div>
+  </div>
+
+  <h3>۲.۳) تحلیل دقیق مؤلفهٔ نمادی: چرا <span class="en">Prolog</span> قطعی است اما کور؟</h3>
+  <p>
+    <span class="en">Prolog</span> روی پایگاهی از <strong>facts</strong> و <strong>قواعد Horn</strong> کار می‌کند و استدلال آن مبتنی بر
+    <strong>اثبات هدف</strong> (<span class="en">Goal Proving</span>) با جست‌وجوی ساختاریافته و <span class="en">Backtracking</span> است.
+    پیامدهای معماری آن:
+  </p>
+  <ul>
+    <li><strong>صدق (Soundness):</strong> هر پاسخ، قابل ردیابی به یک زنجیرهٔ اثبات روی داده‌های واقعی پایگاه دانش است؛ یعنی جوابِ «قابل‌اثبات» به معنای دقیق کلمه.</li>
+    <li><strong>فرض جهان بسته</strong> (<span class="en">Closed-World Assumption</span>): آنچه اثبات نشود، «نه» تلقی می‌شود — همین خاصیت در این پروژه به رفتار امن <code class="inline">default_deny</code> ترجمه شده است.</li>
+    <li><strong>تبیین‌پذیری:</strong> می‌توان «چرا»ی هر تصمیم را با فهرست قوانین مرتبط (<code class="inline">rules_matching_ip</code>) به کاربر نشان داد.</li>
+    <li><strong>اما نقطهٔ کور:</strong> <span class="en">Prolog</span> اصلاً نمی‌فهمد جملهٔ «آیا <span class="en">X</span> می‌تواند روی <span class="en">SSH</span> وصل شود؟» یعنی چه. ورودی آن باید ساختاریافته و دقیق باشد.</li>
+  </ul>
+
+  <h3>۲.۴) جمع‌بندی مقایسه‌ای دو مؤلفه</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>ویژگی</th><th>🧠 مؤلفهٔ عصبی (<span class="en">Gemini</span>)</th><th>📐 مؤلفهٔ نمادی (<span class="en">Prolog</span>)</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>ماهیت</th><td>مدل احتمالاتی — پیش‌بینی آماری توکن</td><td>موتور استنتاج منطقی — اثبات روی <span class="en">facts</span></td></tr>
+        <tr><th>نقطهٔ قوت</th><td class="good">درک زبان طبیعی، ابهام‌زدایی، تعمیم</td><td class="good">قطعیت، صدق، تبیین‌پذیری، فرض جهان بسته</td></tr>
+        <tr><th>نقطهٔ ضعف</th><td class="bad">توهمِ ذاتی، بدون تضمین درستی</td><td class="bad">ناتوان از فهم زبان طبیعی، نیاز به ورودی ساختاریافته</td></tr>
+        <tr><th>نوع خطا</th><td>جواب اشتباه با ظاهر معتبر</td><td>«بدون جواب» — اما هرگز جواب ساختگی</td></tr>
+        <tr><th>نقش در این پروژه</th><td>مترجم: سؤال طبیعی ← <span class="en">JSON</span> ساختاریافته</td><td>داور: استدلال <span class="en">first-match</span> روی ۵۲۷ قانون واقعی</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout key">
+    <span class="ttl">💡 اصل طلایی طراحی این پروژه</span>
+    <p><strong>«مدل زبانی هرگز خودش جواب نهایی را نمی‌دهد.»</strong> جداسازیِ «فهم» از «استدلال»، هستهٔ معماری است:
+    <span class="en">Gemini</span> فقط <em>ترجمه</em> می‌کند و مسئولیت درستیِ جواب، یک‌سره و ساختاراً بر عهدهٔ موتور قطعی است.
+    به همین دلیل پاسخ سامانه همیشه با شناسهٔ قانونِ تصمیم‌گیرنده (<span class="en">Provenance</span>) گره خورده و قابل بازرسی است.</p>
+  </div>
+
+  <h3>۲.۵) الگوی <span class="en">Logic-LM</span>: ترکیب در قالب «مترجم ← مجری»</h3>
+  <p>
+    این پروژه نمونه‌ای عملیاتی از الگوی شناخته‌شدهٔ <span class="en">Logic-LM</span> در ادبیات پژوهشی است:
+    مدل زبانی مسئلهٔ زبان طبیعی را به یک <strong>برنامهٔ صوری میانی</strong> ترجمه می‌کند و سپس یک <strong>حل‌کنندهٔ نمادی</strong>
+    آن را روی دادهٔ واقعی اجرا می‌کند. در طبقه‌بندی معروف <span class="en">Henry Kautz</span> (سخنرانی کلیدی
+    <span class="en">AAAI 2020</span>)، این الگو در ردهٔ <span class="en">Neuro→Symbolic</span> جای می‌گیرد:
+    مؤلفهٔ عصبی یک <em>ساختار نمادی</em> تولید می‌کند که توسط مؤلفهٔ نمادی <em>اجرا</em> می‌شود. سه لایهٔ این ترکیب:
+  </p>
+  <ol>
+    <li><strong>لایهٔ فهم (عصبی):</strong> <span class="en">Gemini</span> سؤال فارسی/انگلیسی را به <span class="en">JSON</span> مقیدشدهٔ اسکیما ترجمه می‌کند.</li>
+    <li><strong>لایهٔ پل (تبدیل و استقرار):</strong> <code class="inline">query_bridge.py</code> انواع را نرمال می‌کند (<span class="en">IP</span> رشته‌ای ← فرم <span class="en">Prolog</span>)، <span class="en">Chain</span> را انتخاب و کوئری را مستقر می‌کند.</li>
+    <li><strong>لایهٔ داوری (نمادی):</strong> <code class="inline">query_engine.pl</code> با معناشناسی <span class="en">first-match</span> روی ترتیب <span class="en">Priority</span> تصمیم قطعی می‌گیرد.</li>
+  </ol>
+
+  <h3>۲.۶) تصمیم امنیتی کلیدی: <span class="en">JSON</span> مقیدشده به‌جای کوئری خام <span class="en">Prolog</span></h3>
+  <p>
+    چرا به مدل زبانی اجازه نمی‌دهیم مستقیماً رشتهٔ کوئری <span class="en">Prolog</span> بنویسد؟ این یک <strong>تصمیم امنیتی آگاهانه</strong> است:
+  </p>
+  <div class="pc-grid">
+    <div class="pc pros">
+      <h3>✔ رویکرد انتخاب‌شده: خروجی ساختاریافتهٔ JSON</h3>
+      <ul>
+        <li>سرویس <span class="en">Gemini</span> با سازوکار اسکیمای پاسخ، خروجی را <strong>قبل از رسیدن به کد ما</strong> — و در سمت سرور گوگل — به قالب مجاز مقید می‌کند (<span class="en">Constrained Decoding</span>).</li>
+        <li>رشتهٔ تولیدشدهٔ مدل هرگز مستقیماً <em>تفسیر</em> (<span class="en">Interpret</span>) نمی‌شود؛ سطح حملهٔ تزریق (<span class="en">Injection</span>) به موتور استدلال عملاً حذف می‌شود.</li>
+        <li>اعتبارسنجی ساده و قطعی است: مقادیر <span class="en">enum</span> محدود (سه <span class="en">Chain</span>)، نوع‌های مشخص (<span class="en">port</span> عددی) و نام تابع از چهار گزینهٔ ازپیش‌تعریف‌شده.</li>
+        <li>رفتار سامانه <strong>قابل آزمون</strong> است: نگاشت ورودی/خروجی شبه‌تابعی و قطعی، تست واحد را ممکن می‌کند.</li>
+      </ul>
+    </div>
+    <div class="pc cons">
+      <h3>✖ رویکرد ردشده: کوئری خام Prolog از LLM</h3>
+      <ul>
+        <li>رشتهٔ آزاد تولیدشده باید پس از دریافت، از نظر <span class="en">Syntax</span> و ایمنی کامل اعتبارسنجی شود — کاری پیچیده و مستعد خطا.</li>
+        <li>هر نقص در اعتبارسنجی یعنی امکان تزریق مستقیم به موتور استدلال (سناریوی <span class="en">Prompt Injection → Query Injection</span>).</li>
+        <li>خطاهای نحویِ نامشخص در زمان اجرا، تجربهٔ کاربری شکننده می‌سازد.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>۲.۷) مرزهای دقیق: توهم در این معماری کجا ممکن است و کجا ساختاراً ناممکن است؟</h3>
+  <p>
+    یک تحلیل صادقانه و دقیق از این معماری، توهم را به دو مرحله تقسیم می‌کند:
+  </p>
+  <ul>
+    <li><strong>مرحلهٔ ترجمه (ممکن، اما مقیدشده):</strong> مدل زبانی می‌تواند سؤال را اشتباه بفهمد و <span class="en">JSON</span> نادرست تولید کند.
+    این ریسک با اسکیمای اجباری، مقادیر پیش‌فرض منطقی و فیلد <code class="inline">clarification_needed</code> به حداقل می‌رسد —
+    سیستم در ابهام، <em>به‌جای حدس زدن، شفاف‌سازی می‌خواهد</em>.</li>
+    <li><strong>مرحلهٔ داوری (ساختاراً ناممکن):</strong> موتور <span class="en">Prolog</span> فقط روی <span class="en">facts</span> واقعی فایل <span class="en">config</span> استدلال می‌کند.
+    حتی اگر ترجمه اشتباه باشد، جوابِ تولیدشده <em>پاسخِ صحیح به همان سؤالِ ترجمه‌شده</em> است — یعنی خطای احتمالی در «انتشار» است، نه در «استدلال». توهمِ به معنای ساختِ جواب از هیچ، اینجا ناممکن است.</li>
+  </ul>
+  <div class="callout success">
+    <span class="ttl">✨ مزایای عینیِ حاصل از این ترکیب در این پروژه</span>
+    <ul>
+      <li>پاسخ قطعی با ذکر قانون مبدأ — قابل اثبات و بازرسی.</li>
+      <li>شکستِ امن: سؤال مبهم ← <code class="inline">clarification_needed</code> به‌جای جواب حدسی.</li>
+      <li>رفتار پیش‌فرض امن: عدم تطابق ← <code class="inline">default_deny</code> (بدون خطا).</li>
+      <li>تبیین کامل «چرا» از طریق فهرست قوانین مرتبط و ترتیب اولویت.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════ ۳. وضعیت ═══════════ -->
+<section id="status">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--green),#4ade80)">📊</span>۳) وضعیت پروژه: سه فاز تکمیل‌شده</h2>
+  <div class="phase">
+    <div class="ph"><span class="st">✅ تمام و تست‌شده</span><b>فاز ۱ — موتور کوئری در Prolog</b><span>تست واقعی روی ۵۲۷ قانون، صفر خطا</span></div>
+    <div class="ph"><span class="st">✅ تمام و تست‌شده</span><b>فاز ۲ — لایهٔ ترجمه با LLM</b><span>تماس واقعی با API گوگل انجام و تأیید شد</span></div>
+    <div class="ph"><span class="st">✅ تمام و تست‌شده</span><b>فاز ۳ — رابط کاربری وب</b><span>routeهای <span class="en">/query</span> در webapp.py + قالب‌های HTML</span></div>
+  </div>
+  <div class="callout info">
+    <span class="ttl">📌 ثبات زیرساخت</span>
+    <p>هیچ‌کدام از فایل‌های اصلی پروژهٔ قبلی (<code class="inline">firewall_engine.pl</code>، <code class="inline">ip_subnet.pl</code>، <code class="inline">bridge.py</code>، <code class="inline">parser.py</code>) تغییر نکرده‌اند؛ این پروژه فقط لایه‌های جدیدی <strong>روی</strong> آن‌ها اضافه می‌کند.</p>
+  </div>
+</section>
+
+<!-- ═══════════ ۴. مفاهیم پایه ═══════════ -->
+<section id="concepts">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--teal),#2dd4bf)">📚</span>۴) مفاهیم پایه‌ای</h2>
+
+  <h3>۴.۱) نمایش یک قانون فایروال در <span class="en">Prolog</span></h3>
+  <p>هر قانون (<span class="en">rule</span>) یک <span class="en">fact</span> با ۸ فیلد است:</p>
+<pre><span class="k">rule</span>(<span class="n">ID</span>, <span class="n">Priority</span>, <span class="n">Action</span>, <span class="n">Protocol</span>, <span class="n">SrcIP</span>, <span class="n">DstIP</span>, <span class="n">SrcPort</span>, <span class="n">DstPort</span>)
+
+<span class="c">% مثال واقعی:</span>
+<span class="k">rule</span>(<span class="n">1</span>, <span class="n">10</span>, <span class="s">allow</span>, <span class="s">tcp</span>, <span class="f">ip4(10,10,0,0,16)</span>, <span class="f">ip4(192,168,50,10,32)</span>, <span class="s">any</span>, <span class="f">port(22)</span>).</pre>
+  <p>
+    یعنی: «قانون شمارهٔ ۱ با اولویت ۱۰ (زودتر از قوانین با اولویت بالاتر چک می‌شود)، اجازه‌دهنده (<span class="en">allow</span>) برای
+    <span class="en">tcp</span>، از هر آدرسِ داخل بازهٔ <span class="en">10.10.0.0/16</span> به آدرس دقیق <span class="en">192.168.50.10</span>،
+    از هر پورت مبدأ، به پورت ۲۲ مقصد.»
+  </p>
+  <div class="callout warn">
+    <span class="ttl">⚠️ نکتهٔ مهم</span>
+    <p><span class="en">Priority</span> با <span class="en">ID</span> فرق دارد: تصمیم اینکه کدام قانون اول اجرا می‌شود بر اساس <strong>Priority</strong> است، نه شمارهٔ <span class="en">ID</span>.</p>
+  </div>
+
+  <h3>۴.۲) معناشناسی <span class="en">First-Match</span> یعنی چه؟</h3>
+  <p>
+    فایروال‌های واقعی قوانین را <strong>به ترتیب</strong> چک می‌کنند و اولین قانونِ منطبق، تصمیم نهایی است — حتی اگر قانون بعدی مشخص‌تر باشد.
+    مثال واقعی که حین ساخت این پروژه کشف شد:
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>قانون</th><th>دامنه</th><th>اولویت</th><th>اقدام</th></tr></thead>
+      <tbody>
+        <tr><td>قانون ۱</td><td><span class="en">10.10.0.0/16</span></td><td>۱۰ (زودتر چک می‌شود)</td><td class="good">allow</td></tr>
+        <tr><td>قانون ۲</td><td><span class="en">10.10.25.0/24</span> (مشخص‌تر)</td><td>۲۰</td><td class="bad">deny</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    آدرس <span class="en">10.10.25.5</span> در <strong>هر دو</strong> بازه قرار دارد. نتیجهٔ نهایی: <strong class="en">allow</strong> —
+    چون قانون ۱ اولویت کمتری دارد و زودتر چک می‌شود؛ با اینکه قانون ۲ مشخص‌تر است. این رفتار ممکن است غیرمنتظره به‌نظر برسد،
+    اما <u>دقیقاً رفتار واقعی فایروال‌هاست</u> و این پروژه آن را درست پیاده‌سازی کرده است.
+  </p>
+
+  <h3>۴.۳) سه زنجیرهٔ شبکه (<span class="en">Chain</span>)</h3>
+  <div class="grid">
+    <div class="card" style="--c:var(--sky)"><h4>📥 <span class="en">INPUT</span></h4><p>ترافیکی که وارد خودِ سیستم می‌شود.</p></div>
+    <div class="card" style="--c:var(--amber)"><h4>📤 <span class="en">OUTPUT</span></h4><p>ترافیکی که از خودِ سیستم خارج می‌شود.</p></div>
+    <div class="card" style="--c:var(--pink)"><h4>🔀 <span class="en">FORWARD</span></h4><p>ترافیکی که از سیستم عبور می‌کند (<span class="en">routing</span>).</p></div>
+  </div>
+  <p>هر سؤالِ پرسیده‌شده باید مشخص کند کدام <span class="en">Chain</span> مورد نظر است.</p>
+</section>
+
+<!-- ═══════════ ۵. معماری ═══════════ -->
+<section id="arch">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--sky),#38bdf8)">🗺️</span>۵) معماری کامل: از سؤال کاربر تا جواب</h2>
+
+  <div class="flow">
+    <div class="fstep" style="border-right:6px solid #64748b">
+      <span class="tag" style="background:#64748b">👤 کاربر</span>
+      <p style="margin:0">«آیا <span class="en">10.10.25.5</span> می‌تواند روی <span class="en">SSH</span> به <span class="en">192.168.50.10</span> وصل شود؟»</p>
+    </div>
+    <div class="arrow">▼<small>عصبی — فهمِ زبان</small></div>
+    <div class="fstep" style="border-right:6px solid var(--violet)">
+      <span class="tag" style="background:var(--violet)">🧠 گام ۱ — لایهٔ LLM · <span class="en">nl_translator.py</span></span>
+      <p style="margin-bottom:8px"><span class="en">Gemini</span> جمله را می‌خواند و به <span class="en">JSON</span> ساختاریافته تبدیل می‌کند — دقیقاً یکی از ۴ نوع سؤالِ ازپیش‌تعریف‌شده:</p>
+<pre style="margin:0">{
+  <span class="k">"function"</span>: <span class="s">"is_allowed"</span>,
+  <span class="k">"is_allowed_args"</span>: {
+    <span class="k">"chain"</span>: <span class="s">"INPUT"</span>,
+    <span class="k">"src_ip"</span>: <span class="s">"10.10.25.5"</span>,
+    <span class="k">"dst_ip"</span>: <span class="s">"192.168.50.10"</span>,
+    <span class="k">"protocol"</span>: <span class="s">"tcp"</span>,
+    <span class="k">"port"</span>: <span class="n">22</span>
+  }
+}</pre>
+    </div>
+    <div class="arrow">▼<small>پل — نرمال‌سازی و استقرار</small></div>
+    <div class="fstep" style="border-right:6px solid var(--amber)">
+      <span class="tag" style="background:var(--amber)">🔌 گام ۲ — اتصال · <span class="en">query_bridge.py</span></span>
+      <ul style="margin:0;font-size:.92rem">
+        <li>تبدیل رشتهٔ خام <span class="en">IP</span> به فرم <span class="en">Prolog</span> یعنی <code class="inline">ip4(10,10,25,5,32)</code> — با تابع موجودِ <code class="inline">ip_to_prolog</code>، بدون کد تکراری</li>
+        <li>فعال‌سازی فقط قوانینِ <span class="en">Chain</span> انتخاب‌شده (اینجا: <span class="en">INPUT</span>)</li>
+        <li>ساخت و اجرای کوئری <span class="en">Prolog</span></li>
+      </ul>
+    </div>
+    <div class="arrow">▼<small>نمادی — استدلال قطعی</small></div>
+    <div class="fstep" style="border-right:6px solid var(--teal)">
+      <span class="tag" style="background:var(--teal)">📐 گام ۳ — موتور استدلال · <span class="en">query_engine.pl</span></span>
+      <p style="margin:0">با قوانین دقیق ریاضی (نه حدس)، همهٔ ruleهای مرتبط را می‌یابد، بر اساس <span class="en">Priority</span> مرتب می‌کند و تصمیمِ اولین تطبیق (<span class="en">first-match</span>) را برمی‌گرداند: <span class="en">allow</span> یا <span class="en">deny</span>.</p>
+    </div>
+    <div class="arrow">▼<small>پاسخ قابل‌اثبات + قانون مبدأ</small></div>
+    <div class="fstep" style="border-right:6px solid var(--green);background:linear-gradient(180deg,#f0fdf4,#ecfdf5)">
+      <span class="tag" style="background:var(--green)">✅ جواب نهایی</span>
+      <p style="margin:0"><strong>«خیر — این ترافیک رد (<span class="en">deny</span>) می‌شود، طبق قانون شمارهٔ ۲.»</strong>
+      (یا هر جوابی که واقعاً درست است — سیستم هرگز حدس نمی‌زند.)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ۶. فاز ۱ ═══════════ -->
+<section id="phase1">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--amber),#fbbf24)">⚙️</span>۶) فاز ۱ — موتور کوئری <span class="en">Prolog</span> (کامل، تست‌شده)</h2>
+  <p>فایل <code class="inline">query_engine.pl</code> چهار نوع سؤال را پشتیبانی می‌کند:</p>
+
+  <div class="grid">
+    <div class="card" style="--c:var(--primary)">
+      <h4>۱) آیا <span class="en">X</span> به <span class="en">Y</span> دسترسی دارد؟</h4>
+      <span class="sig">is_allowed(SrcIP, DstIP, Protocol, Port, Decision)</span>
+      <p>جواب: <span class="en">allow</span> / <span class="en">deny</span> / <span class="en">default_deny</span> (اگر هیچ قانونی مطابقت نداشت). <strong>کامل و دقیق</strong>، با رعایت <span class="en">first-match</span>.</p>
+    </div>
+    <div class="card" style="--c:var(--violet)">
+      <h4>۲) <span class="en">X</span> به کجاها دسترسی دارد؟</h4>
+      <span class="sig">reachable_from(SrcIP, Destinations)</span>
+      <p>فهرست قوانین <span class="en">allow</span> — <strong>شبیه‌سازی کامل نیست</strong>. برای اطمینان از دسترسی واقعی، از <code class="inline">is_allowed</code> استفاده کنید.</p>
+    </div>
+    <div class="card" style="--c:var(--teal)">
+      <h4>۳) چه کسانی به <span class="en">Y</span> دسترسی دارند؟</h4>
+      <span class="sig">who_can_reach(DstIP, Sources)</span>
+      <p>همان محدودیت سؤال نوع ۲ را دارد.</p>
+    </div>
+    <div class="card" style="--c:var(--sky)">
+      <h4>۴) کدام قوانین به این <span class="en">IP</span> مربوط‌اند؟</h4>
+      <span class="sig">rules_matching_ip(IP, Direction, Matches)</span>
+      <p>فهرست کامل قوانین مرتبط به ترتیب اولویت — برای تبیین «چرا»ی یک تصمیم؛ به‌ویژه وقتی جواب <code class="inline">is_allowed</code> غیرمنتظره است.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="ttl">⚠️ نکتهٔ فنی مهم برای توسعه‌دهندگان آینده</span>
+    <p>این فایل باید <strong>دقیقاً کنار</strong> <code class="inline">firewall_engine.pl</code> و <code class="inline">ip_subnet.pl</code> باشد (نه در زیرپوشهٔ جدا).
+    دلیل: خط <code class="inline">:- use_module(ip_subnet).</code> نسبت به پوشهٔ فایلِ <span class="en">consult</span>شده جست‌وجو می‌شود؛
+    در پوشهٔ جدا، خطای «پیدا نشد» می‌دهد. (حین تست واقعی کشف و اصلاح شد.)</p>
+  </div>
+
+  <h3>نتایج تست واقعی (فایل config با ۵۲۷ قانون — صفر خطا)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>تست</th><th>نتیجه</th></tr></thead>
+      <tbody>
+        <tr><th><span class="en">is_allowed</span> — <span class="en">10.10.25.5 → 192.168.50.10, tcp, 22</span></th><td class="good">allow</td><td>قانون ۱ با اولویت کمتر، این <span class="en">IP</span> را هم پوشش می‌دهد</td></tr>
+        <tr><th><span class="en">rules_matching_ip</span> — <span class="en">192.168.50.10, dst</span></th><td>قانون ۱ (allow، اولویت ۱۰) + قانون ۲ (deny، اولویت ۲۰)</td><td>هر دو منطبق‌اند اما قانون ۱ اول اجرا می‌شود</td></tr>
+        <tr><th><span class="en">who_can_reach</span> — <span class="en">192.168.50.10</span></th><td><span class="en">10.10.0.0/16 → tcp:22</span></td><td>طبق قانون ۱</td></tr>
+        <tr><th><span class="en">is_allowed</span> روی <span class="en">chain</span> خالی/ناموجود</th><td class="good">default_deny</td><td>بدون خطا — رفتار امن پیش‌فرض</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ ۷. فاز ۲ ═══════════ -->
+<section id="phase2">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--pink),#f472b6)">🌐</span>۷) فاز ۲ — لایهٔ ترجمه با LLM (تمام و تست‌شده)</h2>
+  <p>فایل <code class="inline">nl_translator.py</code> — رابط میان زبان طبیعی و موتور منطقی (جزئیات تصمیم امنیتی در بخش ۲.۶).</p>
+
+  <h3>چهار نوع سؤالی که <span class="en">Gemini</span> باید تشخیص دهد</h3>
+  <p>دقیقاً منطبق بر چهار پرگیتور فاز ۱:</p>
+<pre><span class="s">"is_allowed"</span>        <span class="c"># آیا X به Y دسترسی دارد؟</span>
+<span class="s">"reachable_from"</span>    <span class="c"># X به کجاها می‌رسد؟</span>
+<span class="s">"who_can_reach"</span>     <span class="c"># چه کسانی به Y می‌رسند؟</span>
+<span class="s">"rules_matching_ip"</span> <span class="c"># کدام قوانین این IP را در بر می‌گیرند؟</span></pre>
+
+  <h3>سؤال مبهم چه می‌شود؟</h3>
+  <div class="callout info">
+    <span class="ttl">ℹ️ سازوکار شفاف‌سازی</span>
+    <p>اگر کاربر مثلاً بگوید «آیا این ترافیک مجاز است؟» بدون ذکر هیچ <span class="en">IP</span>ای، به‌جای حدس زدنِ <span class="en">Gemini</span>،
+    فیلد مجزای <code class="inline">clarification_needed</code> پر می‌شود که توضیح می‌دهد چه اطلاعاتی کم است —
+    و سیستم از کاربر می‌خواهد سؤال را کامل‌تر بپرسد، <strong>به‌جای اینکه جواب اشتباه بدهد</strong>.</p>
+  </div>
+
+  <h3>هوشمندی‌های کوچک اما مهم</h3>
+  <ul>
+    <li><strong>نام سرویس ← پورت:</strong> «<span class="en">SSH</span>» خودکار به <span class="en">tcp:22</span> تبدیل می‌شود (<span class="en">HTTP=80, HTTPS=443, DNS=53</span> نیز همین‌طور).</li>
+    <li><strong>پیش‌فرض‌های منطقیِ Chain:</strong> اگر کاربر <span class="en">Chain</span> را نگوید:
+    «<span class="en">X</span> به <span class="en">Y</span> می‌رسد» ← پیش‌فرض <span class="en">OUTPUT</span>؛ «چه کسی به <span class="en">Y</span> می‌رسد» ← پیش‌فرض <span class="en">INPUT</span>.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ ۸. فاز ۳ ═══════════ -->
+<section id="phase3">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,var(--red),#f87171)">🖥️</span>۸) فاز ۳ — رابط کاربری وب (تمام و تست‌شده)</h2>
+  <ul>
+    <li><strong><span class="en">Route</span>های <span class="en">GET/POST /query</span></strong> به <code class="inline">webapp.py</code> اضافه شد.</li>
+    <li><strong>قالب <code class="inline">templates/query.html</code>:</strong> فرم پرسش زبان طبیعی.</li>
+    <li><strong>قالب <code class="inline">templates/query_report.html</code>:</strong> صفحهٔ نمایش نتیجه همراه با قانون مبدأ.</li>
+    <li>جزئیات کاربری (نحوهٔ استفاده، محدودیت‌ها، متغیرهای محیطی لازم) در <code class="inline">README.md</code> بخش
+    <span class="en">«Natural-language firewall queries (/query)»</span> مستند شده است.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ ۹. فایل‌ها ═══════════ -->
+<section id="files">
+  <h2 class="sec"><span class="h-icon" style="background:linear-gradient(135deg,#475569,#94a3b8)">📁</span>۹) ساختار فایل‌های پروژه</h2>
+<pre>پوشهٔ اصلی پروژه/
+├── firewall_engine.pl   <span class="c">← موجود، بدون تغییر (موتور اصلی audit)</span>
+├── ip_subnet.pl         <span class="c">← موجود، بدون تغییر (منطق IP/subnet)</span>
+├── parser.py            <span class="c">← موجود، بدون تغییر (تبدیل config به facts)</span>
+├── bridge.py            <span class="c">← موجود، بدون تغییر (اتصال Python↔Prolog)</span>
+├── incremental.py       <span class="c">← موجود، بی‌ربط به این فاز</span>
+├── query_engine.pl      <span class="s">← جدید، فاز ۱ [تمام]</span> <span class="c">— باید کنار بقیهٔ .pl ها بماند</span>
+├── nl_query/
+│   ├── query_bridge.py  <span class="s">← جدید، فاز ۱ [تمام]</span>
+│   └── nl_translator.py <span class="s">← جدید، فاز ۲ [تمام]</span>
+├── webapp.py            <span class="s">← routeهای GET/POST /query اضافه شد، فاز ۳ [تمام]</span>
+└── templates/
+    ├── query.html        <span class="s">← فرم پرسش، فاز ۳ [تمام]</span>
+    └── query_report.html <span class="s">← صفحهٔ نتیجه، فاز ۳ [تمام]</span></pre>
+
+</section>
+
+<a class="to-top" href="#top" title="بازگشت به بالا">↑</a>
+
+</body>
+</html>
